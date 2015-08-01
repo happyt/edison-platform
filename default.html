@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Stepper chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      #messages { list-style-type: none; margin: 0; padding: 0; overflow:auto}
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-rfkill child(odd) { background: #eee; }
+    </style>
+  </head>bluetooth
+    
+  <body>
+<h2>Stepper chat...v2</h2>
+<ul id="messages"></ul>
+<form action="">
+    <input id="m" autocomplete="off" value="b -1000"/><button type="button" onclick="doSubmit()">ANTI</button>
+    <input id="m2" autocomplete="off" value="b 1000"/><button type="button" onclick="doSubmit2()">CLOCK</button>
+    <input id="m3" autocomplete="off" value="a -100"/><button type="button" onclick="doSubmit3()">TILT+</button>
+    <input id="m4" autocomplete="off" value="a 100"/><button type="button" onclick="doSubmit4()">TILT-</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    var inbox = document.getElementById("m");
+    var inbox2 = document.getElementById("m2");
+    var inbox3 = document.getElementById("m3");
+    var inbox4 = document.getElementById("m4");
+    var messList = document.getElementById("messages");
+
+    var doSubmit = function(){
+        socket.emit('message', inbox.value);
+        return false;
+    };
+
+    var doSubmit2 = function(){
+        socket.emit('message', inbox2.value);
+        return false;
+    };
+
+    var doSubmit3 = function(){
+        socket.emit('message', inbox3.value);
+        return false;
+    };
+
+    var doSubmit4 = function(){
+        socket.emit('message', inbox4.value);
+        return false;
+    };
+
+    socket.on('message', function(msg){
+        var entry = document.createElement('li');
+        entry.innerText = msg;
+        messList.appendChild(entry);
+        messList.scrollTop = messList.scrollHeight;
+    });
+
+</script>
+</body>
+</html>
